@@ -1,0 +1,23 @@
+version: '3'
+services:
+  kak-db:   
+    image: postgres:14     #follow your version db
+    restart: always  
+    container_name: postgres_db   #your container name 
+    ports:
+      - "3242:5432"     #follow you port change only expose port 
+    environment:
+      POSTGRES_USER: reandata    #for username to connect to db
+      POSTGRES_PASSWORD: reandatapass # for password login to db
+      POSTGRES_DB: reandatadb  # db name . ex:  public or follow your own
+    volumes:  #this volume is you for mount form inside container outside host server 
+      - postgres_data:/var/lib/postgresql/data
+      # - C:/Users/Admin/Downloads/postgres_air_2024.backup:/backup_data
+      # - ./init:/docker-entrypoint-initdb.d
+volumes:
+  postgres_data:
+    name: postgres_air_data
+
+networks:
+  backend:
+    name: postgres_network
