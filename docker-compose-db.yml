@@ -1,23 +1,38 @@
-version: '3'
+version: '3.7'
+
 services:
-  kak-db:   
-    image: postgres:14     #follow your version db
-    restart: always  
-    container_name: postgres_db   #your container name 
-    ports:
-      - "3242:5432"     #follow you port change only expose port 
+  postgres:
+    image: postgres:latest
     environment:
-      POSTGRES_USER: reandata    #for username to connect to db
-      POSTGRES_PASSWORD: reandatapass # for password login to db
-      POSTGRES_DB: reandatadb  # db name . ex:  public or follow your own
-    volumes:  #this volume is you for mount form inside container outside host server 
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: reandatapass
+      POSTGRES_DB: postgres
+    ports:
+      - "4232:5432"
+    volumes:
       - postgres_data:/var/lib/postgresql/data
-      # - C:/Users/Admin/Downloads/postgres_air_2024.backup:/backup_data
-      # - ./init:/docker-entrypoint-initdb.d
+
+  # postgrest:
+  #   image: postgrest/postgrest
+  #   environment:
+  #     PGRST_DB_URI: postgres://user:password@postgres:5432/mydb
+  #     PGRST_DB_SCHEMA: public
+  #     PGRST_DB_ANON_ROLE: web_anon
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+
+  # swaggerui:
+  #   image: swaggerapi/swagger-ui
+  #   environment:
+  #     SWAGGER_JSON: /swagger.json
+  #   ports:
+  #     - "8080:8080"
+  #   volumes:
+  #     - ./swagger/swagger.json:/swagger.json
+  #   depends_on:
+  #     - postgrest
+
 volumes:
   postgres_data:
-    name: postgres_air_data
-
-networks:
-  backend:
-    name: postgres_network
